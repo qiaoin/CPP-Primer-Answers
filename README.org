@@ -1,0 +1,9 @@
+#+TITLE: 《 C++ Primer 》 第五版习题解答
+#+AUTHOR: qiaoin
+#+EMAIL: qiao.liubing@gmail.com
+#+OPTIONS: toc:3 num:nil
+#+STARTUP: showall
+
+#+BEGIN_QUOTE
+本项目作为个人的学习笔记，啃完 C++ Primer 这本大部头。
+#+END_QUOTE
