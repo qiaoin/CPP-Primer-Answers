@@ -1,0 +1,363 @@
+#+TITLE: 第 2 章 变量和基本类型
+#+AUTHOR: qiaoin
+#+EMAIL: qiao.liubing@gmail.com
+#+OPTIONS: toc:3 num:nil
+#+STARTUP: showall
+
+#+BEGIN_QUOTE
+练习 2.1：类型 =int= 、 =long= 、 =long long= 和 =short= 的区别是什么？无符号类型和带符号类型的区别是什么？ =float= 和 =double= 的区别是什么？
+#+END_QUOTE
+
+#+BEGIN_QUOTE
+练习 2.2：计算按揭贷款时，对于利率、本金和付款分别应选择何种数据类型？说明你的理由。
+#+END_QUOTE
+
+#+BEGIN_QUOTE
+练习 2.3：读程序写结果。
+#+END_QUOTE
+
+#+BEGIN_QUOTE
+练习 2.4：编写程序检查你的估计是否正确，如果不正确，请仔细研读本节直到弄明白问题所在。
+#+END_QUOTE
+
+#+BEGIN_QUOTE
+练习 2.5：指出下述字面值的数据类型并说明每一组内几种字面值的区别：
+- 'a', L'a', "a", L"a"
+- 10, 10u, 10L, 10uL, 012, 0xC
+- 3.14, 3.14f, 3.14L
+- 10, 10u, 10., 10e-2
+#+END_QUOTE
+
+#+BEGIN_QUOTE
+练习 2.6：下面两组定义是否有区别，如果有，请叙述之：
+- ~int month = 9, day = 7;~
+- ~int month = 09, day = 07;~
+#+END_QUOTE
+
+#+BEGIN_QUOTE
+练习 2.7：下述字面值表示何种含义？它们各自的数据类型是什么？
+- "Who goes with F\145rgus?\012"
+- 3.14e1L
+- 1024f
+- 3.14L
+#+END_QUOTE
+
+#+BEGIN_QUOTE
+练习 2.8：请利用转义序列编写一段程序，要求先输出 =2M= ，然后转到新一行。修改程序使其先输出 2，然后输出制表符，再输出 =M= ，最后转到新一行。
+#+END_QUOTE
+
+---------------------------分割线---------------------------------
+
+#+BEGIN_QUOTE
+练习 1.9：编写程序，使用 =while= 循环将 50 到 100 的整数相加。
+#+END_QUOTE
+
+#+BEGIN_SRC c++
+  #include <iostream>
+
+  int main() {
+      int sum = 0, val = 50;
+
+      while (val <= 100) {
+          sum += val;
+          ++val;
+      }
+
+      std::cout << "Sum of 50 to 100 inclusive is " << sum  << std::endl;
+
+      return 0;
+  }
+#+END_SRC
+
+#+BEGIN_QUOTE
+练习 1.10：除了 =++= 运算符将运算对象的值增加 1 之外，还有一个递减运算符（ =--= ）实现将值减 1。编写程序，使用递减运算符在循环中按递减顺序打印出 10 到 0 之间的整数。
+#+END_QUOTE
+
+#+BEGIN_SRC c++
+  #include <iostream>
+
+  int main() {
+      int val = 10;
+
+      while (val > 0) {
+          std::cout << val << "\t";
+          --val;
+      }
+      std::cout << val << std::endl;
+
+      return 0;
+  }
+#+END_SRC
+
+#+BEGIN_QUOTE
+练习 1.11：编写程序，提示用户输入两个整数，打印出这两个整数所指定的范围内的所有整数。
+#+END_QUOTE
+
+#+BEGIN_SRC c++
+  #include <iostream>
+
+  int main() {
+      int begin, end;
+
+      std::cin >> begin >> end;
+
+      if (begin > end) {
+          int temp = end;
+          end = begin;
+          begin = temp;
+      }
+
+      while (begin < end) {
+          std::cout << begin << "\t";
+          ++begin;
+      }
+      std::cout << begin << std::endl;
+
+      return 0;
+  }
+#+END_SRC
+
+#+BEGIN_QUOTE
+练习 1.12：下面的 =for= 循环完成了什么功能？ =sum= 的终值是多少？
+  
+  int sum = 0;
+
+  for (int i = -100; i <= 100; ++i)
+
+      sum += i;
+#+END_QUOTE
+
+将 -100 到 100 的所有整数相加，结果为 0
+
+#+BEGIN_QUOTE
+练习 1.13：使用 =for= 循环重做 1.4.1 节中的所有练习。
+#+END_QUOTE
+
+#+BEGIN_SRC c++
+  // 练习 1.9
+  #include <iostream>
+
+  int main() {
+      int sum = 0;
+
+      for (int val = 50; val <= 100; ++val) {
+          sum += val;
+      }
+      std::cout << "Sum of 50 to 100 inclusive is " << sum << std::endl;
+
+      return 0;
+  }
+#+END_SRC
+
+#+BEGIN_SRC c++
+  // 练习 1.10
+  #include <iostream>
+
+  int main() {
+      int val;
+
+      for (val = 10; val > 0; --val) {
+          std::cout << val << "\t";
+      }
+      std::cout << val << std::endl;
+
+      return 0;
+  }
+#+END_SRC
+
+#+BEGIN_SRC c++
+  // 练习 1.11
+  #include <iostream>
+
+  int main() {
+      int begin, end;
+
+      std::cin >> begin >> end;
+
+      if (begin > end) {
+          int temp = end;
+          end = begin;
+          begin = temp;
+      }
+
+      for (;begin < end; ++begin) {
+          std::cout << begin << "\t";
+      }
+      std::cout << begin << std::endl;
+
+      return 0;
+  }
+#+END_SRC
+
+#+BEGIN_QUOTE
+练习 1.14：对比 =for= 循环和 =while= 循环，两种形式的优缺点各是什么？
+#+END_QUOTE
+
+*TODO*
+
+#+BEGIN_QUOTE
+练习 1.15：编写程序，包含第 14 页中“再探编译”中讨论的常见错误。熟悉编译器生成的错误信息。
+#+END_QUOTE
+
+*TODO*
+
+#+BEGIN_QUOTE
+练习 1.16：编写程序，从 =cin= 读取一组数，输出其和。
+#+END_QUOTE
+
+#+BEGIN_SRC c++
+  #include <iostream>
+
+  int main() {
+      int val, sum = 0;
+
+      while (std::cin >> val) {
+          sum += val;
+      }
+      std::cout << "Sum is " << sum << std::endl;
+
+      return 0;
+  }
+#+END_SRC
+
+#+BEGIN_QUOTE
+练习 1.17：如果输入的所有值都是相等的，本节的程序会输出什么？如果没有重复值，输出又会是怎样的？
+#+END_QUOTE
+
+如果输入所有值全部相等，则输出一行“xx occurs x times”；若没有重复值，则每一个值输出一行“xx occurs 1 times”
+
+#+BEGIN_QUOTE
+练习 1.18：编译并运行本节的程序，给它输入全部相等的值。再次运行程序，输入没有重复的值。
+#+END_QUOTE
+
+#+BEGIN_QUOTE
+练习 1.19：修改你为 1.4.1 节练习 1.10 所编写的程序（打印一个范围内的数），使其能处理用户输入的第一个数比第二个数小的情况。
+#+END_QUOTE
+
+#+BEGIN_SRC c++
+  #include <iostream>
+
+  int main() {
+
+      int begin, end;
+
+      std::cin >> begin >> end;
+
+      if (begin < end) {
+          int temp = begin;
+          begin = end;
+          end = temp;
+      }
+
+      while (begin != end) {
+          std::cout << begin << "\t";
+          begin--;
+      }
+      std::cout << begin << std::endl;
+
+      return 0;
+  }
+#+END_SRC
+
+#+BEGIN_QUOTE
+练习 1.20：头文件 [[./Sales_item.h][Sales_item]] 位于当前目录下，用它编写一个程序，读取一组书籍销售记录，将每条记录打印到标准输出上。
+#+END_QUOTE
+
+#+BEGIN_SRC c++
+  #include <iostream>
+  #include "Sales_item.h"
+
+  int main() {
+      Sales_item book;
+
+      while (std::cin >> book) {
+          std::cout << book << std::endl;
+      }
+
+      return 0;
+  }
+#+END_SRC
+
+#+BEGIN_QUOTE
+练习 1.21：编写程序，读取两个 =ISBN= 相同的 =Sales_item= 对象，输出它们的和。
+#+END_QUOTE
+
+#+BEGIN_SRC c++
+  #include <iostream>
+  #include "Sales_item.h"
+
+  int main() {
+      Sales_item item1, item2;
+
+      std::cin >> item1 >> item2;
+      std::cout << item1 + item2 << std::endl;
+
+      return 0;
+  }
+#+END_SRC
+
+#+BEGIN_QUOTE
+练习 1.22：编写程序，读取多个具有相同 =ISBN= 的销售记录，输出所有记录的和。
+#+END_QUOTE
+
+#+BEGIN_SRC c++
+  #include <iostream>
+  #include "Sales_item.h"
+
+  int main() {
+      Sales_item sum, item;
+
+      std::cin >> sum;
+      while (std::cin >> item) {
+          sum += item;
+      }
+
+      std::cout << sum << std::endl;
+
+      return 0;
+  }
+#+END_SRC
+
+#+BEGIN_QUOTE
+练习 1.23：编写程序，读取多条销售记录，并统计每个 =ISBN= （每本书）有几条销售记录。
+#+END_QUOTE
+
+#+BEGIN_SRC c++
+  #include <iostream>
+  #include "Sales_item.h"
+
+  int main() {
+      Sales_item current_item;
+
+      if (std::cin >> current_item) {
+          Sales_item item;
+          int cnt = 1;
+          while (std::cin >> item) {
+              if (current_item.isbn() == item.isbn()) {
+                  ++cnt;
+              } else {
+                  std::cout << "ISBN = " << current_item.isbn()
+                            << " sales " << cnt << std::endl;
+                  current_item = item;
+                  cnt = 1;
+              }
+          }
+          std::cout << "ISBN = " << current_item.isbn() << " sales " << cnt << std::endl;
+      } else {
+          std::cerr << "No data?!" << std::endl;
+          return -1;
+      }
+
+      return 0;
+  }
+#+END_SRC
+
+#+BEGIN_QUOTE
+练习 1.24：输入表示多个 =ISBN= 的多条销售记录来测试上一个程序，每个 =ISBN= 的记录应该聚在一起。
+#+END_QUOTE
+
+编译 ~g++ -Wall -std=c++11 main.cc -o main~ ，执行 =./main < book_sales= 
+
+#+BEGIN_QUOTE
+练习 1.25：借助 [[./Sales_item.h][Sales_item.h]] 头文件，编译并运行本节给出的书店程序。
+#+END_QUOTE

@@ -1,0 +1,450 @@
+#+TITLE: 第 2 章 变量和基本类型
+#+AUTHOR: qiaoin
+#+EMAIL: qiao.liubing@gmail.com
+#+OPTIONS: toc:3 num:nil
+#+STARTUP: showall
+
+#+BEGIN_QUOTE
+练习 3.1：使用恰当的 =using= 声明重做练习。
+#+END_QUOTE
+
+#+BEGIN_QUOTE
+练习 3.2：计算按揭贷款时，对于利率、本金和付款分别应选择何种数据类型？说明你的理由。
+#+END_QUOTE
+
+#+BEGIN_QUOTE
+练习 3.3：读程序写结果。
+#+END_QUOTE
+
+#+BEGIN_QUOTE
+练习 3.4：编写程序检查你的估计是否正确，如果不正确，请仔细研读本节直到弄明白问题所在。
+#+END_QUOTE
+
+#+BEGIN_QUOTE
+练习 3.5：指出下述字面值的数据类型并说明每一组内几种字面值的区别：
+- 'a', L'a', "a", L"a"
+- 10, 10u, 10L, 10uL, 012, 0xC
+- 3.14, 3.14f, 3.14L
+- 10, 10u, 10., 10e-2
+#+END_QUOTE
+
+#+BEGIN_QUOTE
+练习 3.6：下面两组定义是否有区别，如果有，请叙述之：
+- ~int month = 9, day = 7;~
+- ~int month = 09, day = 07;~
+#+END_QUOTE
+
+#+BEGIN_QUOTE
+练习 3.7：下述字面值表示何种含义？它们各自的数据类型是什么？
+- "Who goes with F\145rgus?\012"
+- 3.14e1L
+- 1024f
+- 3.14L
+#+END_QUOTE
+
+#+BEGIN_QUOTE
+练习 3.8：请利用转义序列编写一段程序，要求先输出 =2M= ，然后转到新一行。修改程序使其先输出 2，然后输出制表符，再输出 =M= ，最后转到新一行。
+#+END_QUOTE
+
+---------------------------分割线---------------------------------
+
+#+BEGIN_QUOTE
+练习 3.9：编写程序，使用 =while= 循环将 50 到 100 的整数相加。
+#+END_QUOTE
+
+#+BEGIN_SRC c++
+  #include <iostream>
+
+  int main() {
+      int sum = 0, val = 50;
+
+      while (val <= 100) {
+          sum += val;
+          ++val;
+      }
+
+      std::cout << "Sum of 50 to 100 inclusive is " << sum  << std::endl;
+
+      return 0;
+  }
+#+END_SRC
+
+#+BEGIN_QUOTE
+练习 3.10：除了 =++= 运算符将运算对象的值增加 1 之外，还有一个递减运算符（ =--= ）实现将值减 1。编写程序，使用递减运算符在循环中按递减顺序打印出 10 到 0 之间的整数。
+#+END_QUOTE
+
+#+BEGIN_SRC c++
+  #include <iostream>
+
+  int main() {
+      int val = 10;
+
+      while (val > 0) {
+          std::cout << val << "\t";
+          --val;
+      }
+      std::cout << val << std::endl;
+
+      return 0;
+  }
+#+END_SRC
+
+#+BEGIN_QUOTE
+练习 3.11：编写程序，提示用户输入两个整数，打印出这两个整数所指定的范围内的所有整数。
+#+END_QUOTE
+
+#+BEGIN_SRC c++
+  #include <iostream>
+
+  int main() {
+      int begin, end;
+
+      std::cin >> begin >> end;
+
+      if (begin > end) {
+          int temp = end;
+          end = begin;
+          begin = temp;
+      }
+
+      while (begin < end) {
+          std::cout << begin << "\t";
+          ++begin;
+      }
+      std::cout << begin << std::endl;
+
+      return 0;
+  }
+#+END_SRC
+
+
+
+
+#+BEGIN_QUOTE
+练习 3.12：下列 =vector= 对象的定义有不正确的吗？如果有，请指出来。对于正确的，描述其执行结果；对于不正确的，说明其错误的原因。
+- ~vector<vector<int> > ivec;~
+- ~vector<string> svec = ivec;~
+- ~vector<string> svec(10, "null");~
+#+END_QUOTE
+
+- 正确， =ivec= 是一个空的 =vector<vector<int> >= ，其中的元素 =vector<int>= 也是执行默认初始化，为 0
+- 错误， =svec= 的元素是 =string= 对象，不是 =vector<int>=
+- 正确， =svec= 表示 10 个 =string= 类型的元素，每个都被初始化为 ="null"=
+
+#+BEGIN_QUOTE
+练习 3.13：下列的 =vector= 对象各包含多少个元素？这些元素的值分别是多少？
+#+END_QUOTE
+
+- =vector<int> v1;= 初始状态为空
+- =vector<int> v2(10);= 10 个元素，每个都初始化为 0
+- =vector<int> v2(10, 42);= 10 个元素，每个都初始化为 42
+- =vector<int> v4{10};= 1 个元素，该元素的值为 10
+- =vector<int> v5{10, 42};= 2 个元素，值分别是 10 和 42
+- =vector<string> v6{10};= 10 个元素，每个都默认初始化为空
+- =vector<string> v7{10, "hi"};= 10 个元素，值均为 ="hi"=
+
+#+BEGIN_QUOTE
+练习 3.14：编写一段程序，用 =cin= 读入一组整数并把它们存入一个 =vector= 对象。  
+#+END_QUOTE
+
+#+BEGIN_SRC c++
+  #include <vector>
+  #include <iostream>
+
+  using std::cin;
+  using std::vector;
+
+  int main() {
+      vector<int> ivec;
+
+      int i;
+      while (cin >> i) {
+          ivec.push_back(i);
+      }
+
+      return 0;
+  }
+#+END_SRC
+
+#+BEGIN_QUOTE
+练习 3.15：改写上题的程序，不过这次读入的是字符串。
+#+END_QUOTE
+
+#+BEGIN_SRC c++
+  #include <vector>
+  #include <iostream>
+  #include <string>
+
+  using std::cin;
+  using std::string;
+  using std::vector;
+
+  int main() {
+      vector<string> svec;
+
+      string s;
+      while (cin >> s) {
+          svec.push_back(s);
+      }
+
+      return 0;
+  }
+#+END_SRC
+
+#+BEGIN_QUOTE
+练习 3.16：编写一段程序，把练习 3.13 中 =vector= 对象的容量和具体内容输出出来。检查你之前回答是否正确，如果不对，回过头重新学习 3.3.1 节直到弄明白错在何处为止。
+#+END_QUOTE
+
+*TODO* write a general function
+
+#+BEGIN_QUOTE
+练习 3.17：从 =cin= 读入一组词并把它们存入一个 =vector= 对象，然后设法把所有词都改写为大写形式。输出改变后的结果，每个词占一行。
+#+END_QUOTE
+
+#+BEGIN_SRC c++
+  #include <vector>
+  #include <iostream>
+  #include <string>
+  #include <cctype>
+
+  using std::cin;
+  using std::cout;
+  using std::endl;
+  using std::string;
+  using std::vector;
+
+  void to_uppecase(string& s) {
+      for(auto &c : s) {
+          c = toupper(c);
+      }
+  }
+
+  int main() {
+      vector<string> svec;
+
+      string s;
+      while (cin >> s) {
+          svec.push_back(s);
+      }
+
+      for (vector<string>::iterator iter = svec.begin();
+           iter != svec.end(); ++iter) {
+          to_uppecase(*iter);
+          cout << *iter << endl;
+      }
+
+      return 0;
+  }
+#+END_SRC
+
+#+BEGIN_QUOTE
+练习 3.18：下面的程序合法吗？如果不合法，你准备如何修改？
+#+END_QUOTE
+
+#+BEGIN_SRC c++
+vector<int> ivec;
+ivec[0] = 42;
+#+END_SRC
+
+程序不合法，初始化 =ivec= 为空，不包含任何的元素，当然也就不能通过下标去访问任何元素了。可以修改为：
+
+#+BEGIN_SRC c++
+vector<int> ivec{42};
+#+END_SRC
+
+#+BEGIN_QUOTE
+练习 3.19：如果想定义一个含有 10 个元素的 =vector= 对象，所有元素的值都是 42，请列举三种不同的实现方法。哪种方法更好？为什么？
+#+END_QUOTE
+
+- ~vector<int> ivec{42, 42, 42, 42, 42, 42, 42, 42, 42, 42};~
+- ~vector<int> ivec(10, 42);~ 这种方法更好，简洁
+-
+#+BEGIN_SRC c++
+  vector<int> ivec;
+  for (int i = 0; i != 10; i++) {
+      ivec.push_back(42);
+  }
+#+END_SRC
+
+#+BEGIN_QUOTE
+练习 1.20：读入一组整数并把它们存入一个 =vector= 对象，将每对相邻整数的和输出出来。改写你的程序，这次要求先输出第 1 个和最后 1 个元素的和，接着输出第 2 个和倒数第 2 个元素的和，以此类推。
+#+END_QUOTE
+
+#+BEGIN_SRC c++
+  #include <vector>
+  #include <iostream>
+
+  using std::cin;
+  using std::cout;
+  using std::endl;
+  using std::vector;
+
+  int main() {
+      vector<int> ivec;
+
+      int i;
+      while (cin >> i) {
+          ivec.push_back(i);
+      }
+
+      for (vector<int>::size_type index = 0; index < ivec.size(); index += 2) {
+          if (index + 1 < ivec.size()) {
+              cout << ivec[index] + ivec[index+1] << endl;
+          } else {
+              cout << ivec[index] << endl;
+          }
+      }
+
+      return 0;
+  }
+#+END_SRC
+
+#+BEGIN_SRC c++
+  #include <vector>
+  #include <iostream>
+
+  using std::cin;
+  using std::cout;
+  using std::endl;
+  using std::vector;
+
+  int main() {
+      vector<int> ivec;
+
+      int i;
+      while (cin >> i) {
+          ivec.push_back(i);
+      }
+
+      vector<int>::size_type mid = ivec.size() / 2;
+      for (vector<int>::size_type index = 0; index != mid; index++) {
+          cout << ivec[index] + ivec[ivec.size() - 1 - index] << endl;
+      }
+
+      if (ivec.size() % 2) {
+          cout << ivec[mid] << endl;
+      }
+
+      return 0;
+  }
+#+END_SRC
+
+#+BEGIN_QUOTE
+练习 3.21：请用迭代器重做 3.3.3 节的第一个练习。
+#+END_QUOTE
+
+*TODO*
+
+#+BEGIN_QUOTE
+练习 3.22：修改之前那个输出 =text= 第一段的程序，首先把 =text= 的第一段全都改成大写形式，然后再输出它。
+#+END_QUOTE
+
+#+BEGIN_SRC c++
+  #include <vector>
+  #include <iostream>
+  #include <string>
+  #include <cctype>
+
+  using std::cin;
+  using std::cout;
+  using std::endl;
+  using std::string;
+  using std::vector;
+
+  int main() {
+      vector<string> text = {"this", "is", "a", "paragraph", "", "this",
+                             "is", "another", "paragraph", "."};
+
+      for (auto it = text.begin();
+           it != text.end() && !it->empty(); ++it) {
+          for (auto &c : *it) {
+              c = toupper(c);
+          }
+          cout << *it << endl;
+      }
+
+      return 0;
+  }
+#+END_SRC
+
+#+BEGIN_QUOTE
+练习 3.23：编写一段程序，创建一个含有 10 个整数的 =vector= 对象，然后使用迭代器将所有元素的值都变成原来的两倍。输出 =vector= 对象的内容，检验程序的正确性。
+#+END_QUOTE
+
+#+BEGIN_SRC c++
+  #include <vector>
+  #include <iostream>
+
+  using std::cin;
+  using std::cout;
+  using std::endl;
+  using std::vector;
+
+  int main() {
+      vector<int> ivec;
+      for (int i = 0; i != 10; ++i) {
+          ivec.push_back(i);
+      }
+
+      cout << "Before, vector is : ";
+      for (auto i : ivec) {
+          cout << i << " ";
+      }
+      cout << endl;
+
+      for (auto it = ivec.begin(); it != ivec.end(); ++it) {
+          ,*it = *it * 2;
+      }
+      cout << "After, vector is : ";
+      for (auto i : ivec) {
+          cout << i << " ";
+      }
+      cout << endl;
+
+      return 0;
+  }
+#+END_SRC
+
+#+BEGIN_QUOTE
+练习 3.24：请使用迭代器重做 3.3.3 节的最后一个练习。
+#+END_QUOTE
+
+*TODO*
+
+#+BEGIN_QUOTE
+练习 3.25：3.3.3 节划分分数段的程序是使用下标运算符实现的，请使用迭代器改写该程序并实现完全相同的功能。
+#+END_QUOTE
+
+#+BEGIN_SRC c++
+  #include <vector>
+  #include <iostream>
+
+  using std::cin;
+  using std::cout;
+  using std::endl;
+  using std::vector;
+
+  int main() {
+      vector<unsigned> scores(11, 0);
+      unsigned grade;
+      auto begin = scores.begin();
+      while (cin >> grade) {
+          if (grade <= 100) {
+              (*(begin + grade / 10))++;
+          }
+      }
+
+      for (auto s : scores) {
+          cout << s << " ";
+      }
+      cout << endl;
+
+      return 0;
+  }
+#+END_SRC
+
+#+BEGIN_QUOTE
+练习 3.26：在 100 页的二分搜索程序中，为什么用的是 ~mid = beg + (end - beg) / 2;~ ，而非 ~mid = (beg + end) / 2;~ ？
+#+END_QUOTE
+
+=beg= 和 =end= 均为迭代器，未定义迭代器的相加操作，而迭代器相减是有定义的， =end - beg= 即得到了 =vector= 中元素的数目。另外，若 =beg= 和 =end= 均为索引，相加之后可能会溢出，这也是一个考虑。
