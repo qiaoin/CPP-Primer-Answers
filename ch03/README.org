@@ -5,120 +5,303 @@
 #+STARTUP: showall
 
 #+BEGIN_QUOTE
+*注：* 将 3.5 数组 & 3.6 多维数组跳过，现阶段没有这方面的需求，之后如果需要再回来看。 [2018-05-06 16:25:49]
+#+END_QUOTE
+
+#+BEGIN_QUOTE
 练习 3.1：使用恰当的 =using= 声明重做练习。
 #+END_QUOTE
 
 #+BEGIN_QUOTE
-练习 3.2：计算按揭贷款时，对于利率、本金和付款分别应选择何种数据类型？说明你的理由。
-#+END_QUOTE
-
-#+BEGIN_QUOTE
-练习 3.3：读程序写结果。
-#+END_QUOTE
-
-#+BEGIN_QUOTE
-练习 3.4：编写程序检查你的估计是否正确，如果不正确，请仔细研读本节直到弄明白问题所在。
-#+END_QUOTE
-
-#+BEGIN_QUOTE
-练习 3.5：指出下述字面值的数据类型并说明每一组内几种字面值的区别：
-- 'a', L'a', "a", L"a"
-- 10, 10u, 10L, 10uL, 012, 0xC
-- 3.14, 3.14f, 3.14L
-- 10, 10u, 10., 10e-2
-#+END_QUOTE
-
-#+BEGIN_QUOTE
-练习 3.6：下面两组定义是否有区别，如果有，请叙述之：
-- ~int month = 9, day = 7;~
-- ~int month = 09, day = 07;~
-#+END_QUOTE
-
-#+BEGIN_QUOTE
-练习 3.7：下述字面值表示何种含义？它们各自的数据类型是什么？
-- "Who goes with F\145rgus?\012"
-- 3.14e1L
-- 1024f
-- 3.14L
-#+END_QUOTE
-
-#+BEGIN_QUOTE
-练习 3.8：请利用转义序列编写一段程序，要求先输出 =2M= ，然后转到新一行。修改程序使其先输出 2，然后输出制表符，再输出 =M= ，最后转到新一行。
-#+END_QUOTE
-
----------------------------分割线---------------------------------
-
-#+BEGIN_QUOTE
-练习 3.9：编写程序，使用 =while= 循环将 50 到 100 的整数相加。
+练习 3.2：编写一段程序从标准输入中一次读入一整行，然后修改该程序使其一次读入一个词。
 #+END_QUOTE
 
 #+BEGIN_SRC c++
+  #include <string>
   #include <iostream>
 
-  int main() {
-      int sum = 0, val = 50;
+  using std::cin;
+  using std::cout;
+  using std::endl;
+  using std::string;
 
-      while (val <= 100) {
-          sum += val;
-          ++val;
+  int main() {
+      string line;
+      while (getline(cin, line)) {
+          cout << line << endl;
+      }
+      return 0;
+  }
+#+END_SRC
+
+#+BEGIN_SRC c++
+  #include <iostream>
+  #include <string>
+
+  using std::cin;
+  using std::cout;
+  using std::endl;
+  using std::string;
+
+  int main() {
+      string word;
+      while (cin >> word) {
+          cout << word << endl;
+      }
+      return 0;
+  }
+#+END_SRC
+
+#+BEGIN_QUOTE
+练习 3.3：请说明 =string= 类的输入运算符和 =getline= 函数分别是如何处理空白字符的。
+#+END_QUOTE
+
+- =string= 类的输入运算符 =>>= ，在执行读取操作时， =string= 对象会自动忽略开头的空白（即空格符、换行符、制表符等）并从第一个真正的字符开始读起，知道遇见下一处空白为止；
+- =getline= 函数从给定的输入流中读入内容，直到遇到换行符为止（换行符也被读进来了），然后把所读到的内容存入到那个 =string= 对象中去（注意不存换行符）。
+
+#+BEGIN_QUOTE
+练习 3.4：编写一段程序读入两个字符串，比较其是否相等并输出结果。如果不相等，输出较大的那个字符串。改写上述程序，比较输入的两个字符串是否等长，如果不等长，输出长度较大的那个字符串。
+#+END_QUOTE
+
+#+BEGIN_SRC c++
+  #include <string>
+  #include <iostream>
+
+  using std::cin;
+  using std::cout;
+  using std::endl;
+  using std::string;
+
+  int main() {
+      string str1, str2;
+      getline(cin, str1);
+      getline(cin, str2);
+
+      if (str1 == str2) {
+          cout << "两字符串相等" << endl;
+      } else {
+          if (str1 > str2) {
+              cout << str1 << endl;
+          } else {
+              cout << str2 << endl;
+          }
       }
 
-      std::cout << "Sum of 50 to 100 inclusive is " << sum  << std::endl;
+      return 0;
+  }
+#+END_SRC
+
+#+BEGIN_SRC c++
+  #include <string>
+  #include <iostream>
+
+  using std::cin;
+  using std::cout;
+  using std::endl;
+  using std::string;
+
+  int main() {
+      string str1, str2;
+      getline(cin, str1);
+      getline(cin, str2);
+
+      if (str1.size() == str2.size()) {
+          cout << "两字符串等长" << endl;
+      } else {
+          if (str1.size() > str2.size()) {
+              cout << str1 << endl;
+          } else {
+              cout << str2 << endl;
+          }
+      }
 
       return 0;
   }
 #+END_SRC
 
 #+BEGIN_QUOTE
-练习 3.10：除了 =++= 运算符将运算对象的值增加 1 之外，还有一个递减运算符（ =--= ）实现将值减 1。编写程序，使用递减运算符在循环中按递减顺序打印出 10 到 0 之间的整数。
+练习 3.5：编写一段程序从标准输入中读入多个字符串并将它们连接在一起，输出连接成的大字符串。然后修改程序，用空格把输入的多个字符串分隔开来。
 #+END_QUOTE
 
 #+BEGIN_SRC c++
+  #include <string>
   #include <iostream>
 
-  int main() {
-      int val = 10;
+  using std::cin;
+  using std::cout;
+  using std::endl;
+  using std::string;
 
-      while (val > 0) {
-          std::cout << val << "\t";
-          --val;
+  int main() {
+      string result;
+      string s;
+      while (cin >> s) {
+          result += s;
       }
-      std::cout << val << std::endl;
+      cout << result << endl;
+      return 0;
+  }
+#+END_SRC
+
+#+BEGIN_SRC c++
+  #include <string>
+  #include <iostream>
+
+  using std::cin;
+  using std::cout;
+  using std::endl;
+  using std::string;
+
+  int main() {
+      string result;
+      string s;
+      if (cin >> s) {
+          result += s;
+      }
+      while (cin >> s) {
+          result += " ";
+          result += s;
+      }
+      cout << result << endl;
+      return 0;
+  }
+#+END_SRC
+
+#+BEGIN_QUOTE
+练习 3.6：编写一段程序，使用范围 =for= 语句将字符串内的所有字符用 =X= 代替。
+#+END_QUOTE
+
+#+BEGIN_SRC c++
+  #include <string>
+  #include <iostream>
+
+  using std::cout;
+  using std::endl;
+  using std::string;
+
+  int main() {
+      string str = "0123456789";
+      for (auto &c : str) {
+          c = 'X';
+      }
+      cout << str << endl;
 
       return 0;
   }
 #+END_SRC
 
 #+BEGIN_QUOTE
-练习 3.11：编写程序，提示用户输入两个整数，打印出这两个整数所指定的范围内的所有整数。
+练习 3.7：就上一题完成的程序而言，如果循环控制变量的类型设为 =char= 将发生什么？先估计一下结果，然后实际编程进行验证。
+#+END_QUOTE
+
+声明为 =char= 类型，即在 =for= 循环的每次都声明一个局部变量 =c= ， =c= 得到 =string= 的每一个字符，然后改变此局部变量 =c= 的值为 =X= ，当循环结束时，并不会改变 =string= 的值。
+
+#+BEGIN_QUOTE
+练习 3.8：分别用 =while= 循环和传统的 =for= 循环重写第一题的程序，你觉得哪种形式更好呢？为什么？
 #+END_QUOTE
 
 #+BEGIN_SRC c++
+  #include <string>
   #include <iostream>
 
+  using std::cout;
+  using std::endl;
+  using std::string;
+
   int main() {
-      int begin, end;
+      string str = "0123456789";
 
-      std::cin >> begin >> end;
-
-      if (begin > end) {
-          int temp = end;
-          end = begin;
-          begin = temp;
+      decltype(str.size()) index = 0;
+      while (index != str.size()) {
+          str[index] = 'X';
+          index++;
       }
-
-      while (begin < end) {
-          std::cout << begin << "\t";
-          ++begin;
-      }
-      std::cout << begin << std::endl;
+      cout << str << endl;
 
       return 0;
   }
 #+END_SRC
 
+#+BEGIN_SRC c++
+  #include <string>
+  #include <iostream>
 
+  using std::cout;
+  using std::endl;
+  using std::string;
 
+  int main() {
+      string str = "0123456789";
+
+      for (decltype(str.size()) index = 0;
+           index != str.size(); ++index) {
+          str[index] = 'X';
+      }
+      cout << str << endl;
+
+      return 0;
+  }
+#+END_SRC
+
+使用范围 =for= 更好，不用自己控制和判断索引是否合法，代码也更清晰。
+
+#+BEGIN_QUOTE
+练习 3.9：下面的程序有何作用？它合法吗？如果不合法，为什么？
+#+END_QUOTE
+
+#+BEGIN_SRC c++
+string s;
+cout << s[0] << endl;
+#+END_SRC
+
+不合法， =s= 为一空字符串， =s[0]= 期望访问字符串的第一个字符，未检查下标的合法性。
+
+#+BEGIN_SRC c++
+string s;
+if (!s.empty()) {
+    cout << s[0] << endl;
+}
+#+END_SRC
+
+#+BEGIN_QUOTE
+练习 3.10：编写一段程序，读入一个包含标点符号的字符串，将标点符号去除后输出字符串的剩余部分。
+#+END_QUOTE
+
+#+BEGIN_SRC c++
+  #include <cctype>
+  #include <string>
+  #include <iostream>
+
+  using std::cin;
+  using std::cout;
+  using std::endl;
+  using std::string;
+
+  int main() {
+      string str;
+
+      getline(cin, str);
+      for (auto c : str) {
+          if (!ispunct(c)) {
+              cout << c;
+          }
+      }
+      cout << endl;
+
+      return 0;
+  }
+#+END_SRC
+
+#+BEGIN_QUOTE
+练习 3.11：下面的范围 =for= 语句合法吗？如果合法， =c= 的类型是什么？
+#+END_QUOTE
+
+#+BEGIN_SRC c++
+const string s = "Keep out!";
+for (auto &c : s) { /* ... */ }
+#+END_SRC
+
+合法， =c= 类型为 =const char &=
 
 #+BEGIN_QUOTE
 练习 3.12：下列 =vector= 对象的定义有不正确的吗？如果有，请指出来。对于正确的，描述其执行结果；对于不正确的，说明其错误的原因。
@@ -448,3 +631,5 @@ vector<int> ivec{42};
 #+END_QUOTE
 
 =beg= 和 =end= 均为迭代器，未定义迭代器的相加操作，而迭代器相减是有定义的， =end - beg= 即得到了 =vector= 中元素的数目。另外，若 =beg= 和 =end= 均为索引，相加之后可能会溢出，这也是一个考虑。
+
+
