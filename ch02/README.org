@@ -8,17 +8,37 @@
 练习 2.1：类型 =int= 、 =long= 、 =long long= 和 =short= 的区别是什么？无符号类型和带符号类型的区别是什么？ =float= 和 =double= 的区别是什么？
 #+END_QUOTE
 
+1. 用于表示（可能）不同尺寸的整数。C++ 语言规定一个 =int= 至少和一个 =short= 一样大，一个 =long= 至少和一个 =int= 一样大，一个 =long long= 至少和一个 =long= 一样大。其中，数据类型 =long long= 是在 C++11 中新定义的；
+2. 带符号类型可以表示正数、负数或 0，无符号类型则仅能表示大于等于 0 的值；
+3. 通常， =float= 以 1 个字（ 32 Byte）来表示，称为单精度浮点数， =double= 以 2 个字（ 64 Byte）来表示，称为双精度浮点数。
+
 #+BEGIN_QUOTE
 练习 2.2：计算按揭贷款时，对于利率、本金和付款分别应选择何种数据类型？说明你的理由。
 #+END_QUOTE
+
+利率、本金和付款均使用 =double= 类型表示
 
 #+BEGIN_QUOTE
 练习 2.3：读程序写结果。
 #+END_QUOTE
 
+#+BEGIN_SRC c++
+unsigned u = 10, u2 = 42;
+std::cout << u2 - u << std::endl;  // 32
+std::cout << u - u2 << std::endl;  // int 占 32 位，4294967264
+
+int i = 10, i2 = 42;
+std::cout << i2 - i << std::endl;  // 32
+std::cout << i - i2 << std::endl;  // -32
+std::cout << i - u << std::endl;   // 0
+std::cout << u - i << std::endl;   // 0
+#+END_SRC
+
 #+BEGIN_QUOTE
 练习 2.4：编写程序检查你的估计是否正确，如果不正确，请仔细研读本节直到弄明白问题所在。
 #+END_QUOTE
+
+估计正确
 
 #+BEGIN_QUOTE
 练习 2.5：指出下述字面值的数据类型并说明每一组内几种字面值的区别：
@@ -28,336 +48,317 @@
 - 10, 10u, 10., 10e-2
 #+END_QUOTE
 
+*TODO*
+
 #+BEGIN_QUOTE
 练习 2.6：下面两组定义是否有区别，如果有，请叙述之：
 - ~int month = 9, day = 7;~
 - ~int month = 09, day = 07;~
 #+END_QUOTE
 
+有区别，第一种表示为十进制，第二种表示中 =09= =07= 的表示为八进制，这里 =09= 会报错
+
 #+BEGIN_QUOTE
 练习 2.7：下述字面值表示何种含义？它们各自的数据类型是什么？
-- "Who goes with F\145rgus?\012"
-- 3.14e1L
-- 1024f
-- 3.14L
+- "Who goes with F\145rgus?\012" 字符串字面值
+- 3.14e1L 扩展精度浮点型字面值，类型为 =long double=
+- 1024f 单精度浮点型字面值，类型为 =float=
+- 3.14L 扩展精度浮点型字面值，类型为 =long double=
 #+END_QUOTE
 
 #+BEGIN_QUOTE
 练习 2.8：请利用转义序列编写一段程序，要求先输出 =2M= ，然后转到新一行。修改程序使其先输出 2，然后输出制表符，再输出 =M= ，最后转到新一行。
 #+END_QUOTE
 
----------------------------分割线---------------------------------
-
-#+BEGIN_QUOTE
-练习 1.9：编写程序，使用 =while= 循环将 50 到 100 的整数相加。
-#+END_QUOTE
-
 #+BEGIN_SRC c++
   #include <iostream>
 
   int main() {
-      int sum = 0, val = 50;
+      std::cout << "2M\n";
 
-      while (val <= 100) {
-          sum += val;
-          ++val;
-      }
-
-      std::cout << "Sum of 50 to 100 inclusive is " << sum  << std::endl;
+      std::cout << "2\tM\n";
 
       return 0;
   }
 #+END_SRC
 
 #+BEGIN_QUOTE
-练习 1.10：除了 =++= 运算符将运算对象的值增加 1 之外，还有一个递减运算符（ =--= ）实现将值减 1。编写程序，使用递减运算符在循环中按递减顺序打印出 10 到 0 之间的整数。
+练习 2.9：解释下列定义的含义。对于非法的定义，请说明错在何处并将其改正。
+- ~std::cout >> int input_value;~
+- ~int i = {3.14};~
+- ~double salary = wage = 9999.99;~
+- ~int i = 3.14;~
+#+END_QUOTE
+
+#+BEGIN_QUOTE
+练习 2.10：下列变量的初值分别是什么？
 #+END_QUOTE
 
 #+BEGIN_SRC c++
   #include <iostream>
+  #include <string>
+
+  std::string global_str; // 类的对象如果没有显式地初始化，则值由类确定
+                          // string 类规定如果没有指定初值，则生成一个空串
+  int global_int;  // 内置类型未显式初始化，初始值由定义的位置决定
+                   // 定义在任何函数之外的变量被默认初始化为 0
 
   int main() {
-      int val = 10;
-
-      while (val > 0) {
-          std::cout << val << "\t";
-          --val;
-      }
-      std::cout << val << std::endl;
+      int local_int;  // 定义在函数体内部的内置类型变量将不被初始化
+                      // 一个未被初始化的内置类型变量的值是未定义的
+                      // 如果试图拷贝或以其他形式访问此类值将引发错误
+      std::string local_str;  // 空串
 
       return 0;
   }
 #+END_SRC
 
 #+BEGIN_QUOTE
-练习 1.11：编写程序，提示用户输入两个整数，打印出这两个整数所指定的范围内的所有整数。
+练习 2.11：指出下面的语句是声明还是定义：
+- ~extern int ix = 1024;~  定义
+- ~int iy;~ 声明并定义
+- ~extern int iz;~ 声明
+#+END_QUOTE
+
+#+BEGIN_QUOTE
+练习 2.12：请说出下面的名字中哪些是非法的？
+- ~int double = 3.14;~  // 非法， =double= 是 C++ 关键字，不能被用作标识符
+- ~int _;~  // 可能非法
+- ~int catch-22;~  // 非法， =-= 不能出现在标识符中
+- ~int 1_or_2 = 1;~  // 非法，标识符不能以数字开头，必须以字母或下划线开头
+- ~double Double = 3.14;~  // 合法
+#+END_QUOTE
+
+#+BEGIN_QUOTE
+练习 2.13：下面程序中 =j= 的值是多少？
 #+END_QUOTE
 
 #+BEGIN_SRC c++
-  #include <iostream>
+  int i =42;
 
   int main() {
-      int begin, end;
-
-      std::cin >> begin >> end;
-
-      if (begin > end) {
-          int temp = end;
-          end = begin;
-          begin = temp;
-      }
-
-      while (begin < end) {
-          std::cout << begin << "\t";
-          ++begin;
-      }
-      std::cout << begin << std::endl;
-
+      int i = 100;
+      int j = i;  // 100
       return 0;
   }
 #+END_SRC
 
 #+BEGIN_QUOTE
-练习 1.12：下面的 =for= 循环完成了什么功能？ =sum= 的终值是多少？
-  
-  int sum = 0;
+练习 2.14：下面的程序合法吗？如果合法，它将输出什么？
+#+END_QUOTE
 
-  for (int i = -100; i <= 100; ++i)
-
+#+BEGIN_SRC c++
+  int i = 100, sum = 0;
+  for (int i = 0; i ！= 10； ++i) {
       sum += i;
-#+END_QUOTE
+  }
 
-将 -100 到 100 的所有整数相加，结果为 0
+  std::cout << i << " " << sum << std::endl;
+#+END_SRC
+
+合法，输出为 =100 45=
 
 #+BEGIN_QUOTE
-练习 1.13：使用 =for= 循环重做 1.4.1 节中的所有练习。
+练习 2.15：下面的哪个定义是不合法的？为什么？
+- ~int ival = 1.01;~  合法
+- ~int &rval1 = 1.01;~  不合法，引用类型的初始值必须使用一个对象
+- ~int &rval2 = ival;~  合法
+- ~int &rval3;~  不合法，引用必须被初始化
+#+END_QUOTE
+
+#+BEGIN_QUOTE
+练习 2.16：考察下面的所有赋值然后回答：哪些赋值是不合法的？为什么？哪些赋值是合法的？它们执行了什么样的操作？
+- ~int i = 0, &r1 = i;~
+- ~double d = 0, &r2 = d;~ 
+#+END_QUOTE
+
+- ~r2 = 3.14159;~  不合法，引用不能重新绑定
+- ~r2 = r1;~  不合法，引用不能重新绑定
+- ~i = r2;~  合法，将与 =r2= 绑定的 =d= 的值赋给 =int= 类型的 =i=
+- ~r1 = d;~  不合法，引用不能重新绑定
+
+#+BEGIN_QUOTE
+练习 2.17：执行下面的代码将输出什么结果？
 #+END_QUOTE
 
 #+BEGIN_SRC c++
-  // 练习 1.9
-  #include <iostream>
-
-  int main() {
-      int sum = 0;
-
-      for (int val = 50; val <= 100; ++val) {
-          sum += val;
-      }
-      std::cout << "Sum of 50 to 100 inclusive is " << sum << std::endl;
-
-      return 0;
-  }
+int i, &ri = i;
+i = 5;
+ri = 10;
+std::cout << i << " " << ri << std::endl;
 #+END_SRC
 
-#+BEGIN_SRC c++
-  // 练习 1.10
-  #include <iostream>
-
-  int main() {
-      int val;
-
-      for (val = 10; val > 0; --val) {
-          std::cout << val << "\t";
-      }
-      std::cout << val << std::endl;
-
-      return 0;
-  }
-#+END_SRC
-
-#+BEGIN_SRC c++
-  // 练习 1.11
-  #include <iostream>
-
-  int main() {
-      int begin, end;
-
-      std::cin >> begin >> end;
-
-      if (begin > end) {
-          int temp = end;
-          end = begin;
-          begin = temp;
-      }
-
-      for (;begin < end; ++begin) {
-          std::cout << begin << "\t";
-      }
-      std::cout << begin << std::endl;
-
-      return 0;
-  }
-#+END_SRC
+输出 =10 10=
 
 #+BEGIN_QUOTE
-练习 1.14：对比 =for= 循环和 =while= 循环，两种形式的优缺点各是什么？
-#+END_QUOTE
-
-*TODO*
-
-#+BEGIN_QUOTE
-练习 1.15：编写程序，包含第 14 页中“再探编译”中讨论的常见错误。熟悉编译器生成的错误信息。
-#+END_QUOTE
-
-*TODO*
-
-#+BEGIN_QUOTE
-练习 1.16：编写程序，从 =cin= 读取一组数，输出其和。
+练习 2.18：编写代码分别更改指针的值以及指针所指对象的值。
 #+END_QUOTE
 
 #+BEGIN_SRC c++
   #include <iostream>
 
   int main() {
-      int val, sum = 0;
+      int val = 10, val2 = 20;
+      int *valp = &val;
 
-      while (std::cin >> val) {
-          sum += val;
-      }
-      std::cout << "Sum is " << sum << std::endl;
+      std::cout << "valp = " << valp << std::endl;
+      // 修改指针的值
+      valp = &val2;
+      std::cout << "valp = " << valp << std::endl;
+
+      std::cout << "*valp = " << *valp << std::endl;
+      // 修改指针所指对象的值
+      *valp = 30;
+      std::cout << "*valp = " << *valp << std::endl;
 
       return 0;
   }
 #+END_SRC
 
 #+BEGIN_QUOTE
-练习 1.17：如果输入的所有值都是相等的，本节的程序会输出什么？如果没有重复值，输出又会是怎样的？
+练习 2.19：说明指针和引用的主要区别。
 #+END_QUOTE
 
-如果输入所有值全部相等，则输出一行“xx occurs x times”；若没有重复值，则每一个值输出一行“xx occurs 1 times”
+- 指针是一个对象，允许对指针进行赋值和拷贝，而且在指针的生命周期内它可以先后指向几个不同的对象。指针无须在定义时赋初值。
+- 引用本身并非一个对象。一旦定义了引用，就无法令其再绑定到另外的对象，之后每次使用这个引用都是访问它最初绑定的那个对象。引用必须在定义时初始化。
 
 #+BEGIN_QUOTE
-练习 1.18：编译并运行本节的程序，给它输入全部相等的值。再次运行程序，输入没有重复的值。
-#+END_QUOTE
-
-#+BEGIN_QUOTE
-练习 1.19：修改你为 1.4.1 节练习 1.10 所编写的程序（打印一个范围内的数），使其能处理用户输入的第一个数比第二个数小的情况。
+练习 2.20：请叙述下面这段代码的作用。
 #+END_QUOTE
 
 #+BEGIN_SRC c++
-  #include <iostream>
-
-  int main() {
-
-      int begin, end;
-
-      std::cin >> begin >> end;
-
-      if (begin < end) {
-          int temp = begin;
-          begin = end;
-          end = temp;
-      }
-
-      while (begin != end) {
-          std::cout << begin << "\t";
-          begin--;
-      }
-      std::cout << begin << std::endl;
-
-      return 0;
-  }
+int i = 42;
+int *p1 = &i;
+*p1 = *p1 * *p1;
 #+END_SRC
 
+=p1= 为指向 =i= 的指针，在第三行代码中，使用解引用符 =*= 访问 =p1= ，修改 =p1= 所指向对象 =i= 的值为 1764 
+
 #+BEGIN_QUOTE
-练习 1.20：头文件 [[./Sales_item.h][Sales_item]] 位于当前目录下，用它编写一个程序，读取一组书籍销售记录，将每条记录打印到标准输出上。
+练习 2.21：请解释下述定义。在这些定义中有非法的吗？如果有，为什么？
+
+~int i = 0;~
+- ~double* dp = &i;~  非法，指针 =dp= 的类型与 =i= 的类型不匹配
+- ~int *pi = i;~  非法，不能将 =int= 变量直接赋值给指针，即使 =int= 变量的值恰好等于 =0= 也不行
+- ~int *p = &i;~  合法
+#+END_QUOTE
+
+#+BEGIN_QUOTE
+练习 2.22：假设 =p= 是一个 =int= 型指针，请说明下述代码的含义。
+#+END_QUOTE
+
+- =if (p) // ...=  如果指针 =p= 为空指针，则 =if= 条件判断为 =false= ；任何非空指针都将得到 =true=
+- =if (*p) // ...=  考察指针 =p= 做指向的 =int= 值，如果 =int= 值为 =0= ，则 =if= 条件判断为 =false= ；其他的非 =0= 值都将得到 =true=
+
+#+BEGIN_QUOTE
+练习 2.23：给定指针 =p= ，你能知道它是否指向一个合法的对象吗？如果能，叙述判断的思路；如果不能，也请说明理由。
+#+END_QUOTE
+
+不能，访问一个指针，若是指向了一个非法对象，指针所占的内存空间中恰好有内容，而且这些内容可以被当做某个地址进行内存访问，就根本不能分清它到底是合法的还是非法的了。
+
+#+BEGIN_QUOTE
+练习 2.24：在下面这段代码中为什么 =p= 合法而 =lp= 非法？
 #+END_QUOTE
 
 #+BEGIN_SRC c++
-  #include <iostream>
-  #include "Sales_item.h"
-
-  int main() {
-      Sales_item book;
-
-      while (std::cin >> book) {
-          std::cout << book << std::endl;
-      }
-
-      return 0;
-  }
+int i = 42;
+void *p = &i;
+long *lp = &i;
 #+END_SRC
 
+- =p= 合法， =void= 类型的指针可用于存放任意对象的地址， =int= 类型的对象 =i= 的地址就可以；
+- =lp= 非法，指针 =lp= 的类型和 =i= 的类型不匹配
+
 #+BEGIN_QUOTE
-练习 1.21：编写程序，读取两个 =ISBN= 相同的 =Sales_item= 对象，输出它们的和。
+练习 2.25：说明下列变量的类型和值。
+#+END_QUOTE
+
+- ~int* ip, i, &r = i;~  =ip= 是指向 =int= 类型的指针， =i= 为 =int= 类型的数， =r= 为 =int= 类型的引用
+- ~int i, *ip = 0;~  =i= 为 =int= 类型的数， =ip= 为 =int= 类型的指针，初始化为空指针
+- ~int* ip, ip2;~  =ip= 为 =int= 类型的指针， =ip2= 为 =int= 类型的数
+
+#+BEGIN_QUOTE
+练习 2.26：下面哪些句子是合法的？如果有不合法的句子，请说明为什么？
+#+END_QUOTE
+
+- ~const int buf;~  非法， =buf= 是一个未经初始化的常量
+- ~int cnt = 0;~  合法
+- ~const int sz = cnt;~  合法
+- ~++cnt; ++sz;~  非法， =sz= 为一个常量，不能执行改变其内容的操作
+
+#+BEGIN_QUOTE
+练习 2.27：下面的哪些初始化是合法的？请说明原因。
+#+END_QUOTE
+
+- ~int i = -1, &r = 0;~  合法
+- ~int *const p2 = &i2;~  合法
+- ~const int i = -1, &r = 0;~  合法
+- ~const int *const p3 = &i2;~  合法
+- ~const int *p1 = &i2;~  合法
+- ~const int &const r2;~  非法
+- ~const int i2 = i, &r = i;~  合法
+
+#+BEGIN_QUOTE
+练习 2.28：说明下面的这些定义是什么意思，挑出其中不合法的。
+#+END_QUOTE
+
+- ~int i, *const cp;~  非法， =cp= 作为常量指针必须初始化
+- ~int *p1, *const p2;~  非法， =p2= 作为常量指针必须初始化
+- ~const int ic, &r = ic;~  非法， =ic= 作为 =const= 对象必须初始化
+- ~const int *const p3;~  非法， =p3= 作为常量指针必须初始化
+- ~const int *p;~  非法， =p= 作为 =const= 对象必须初始化
+
+#+BEGIN_QUOTE
+练习 2.29：假设已有上一个练习中定义的那些变量，则下面的哪些语句是合法的？请说明原因。
+#+END_QUOTE
+
+- ~i = ic;~  合法
+- ~p1 = p3;~  非法， =p1= 会去改变 =p3= 所指向的 =const= 对象
+- ~p1 = &ic;~  非法， =p1= 会去改变 =ic= 常量的值
+- ~p3 = &ic;~  合法
+- ~p2 = p1;~  合法
+- ~ic = *p3;~  非法， =ic= 作为 =const= 对象一旦创建其值就不能再修改
+
+#+BEGIN_QUOTE
+练习 2.30：对于下面的这些语句，请说明对象被声明成了顶层 =const= 还是底层 =const= ？
+#+END_QUOTE
+
+- ~const int v2 = 0;~
+- ~int v1 = v2;~
+- ~int *p1 = &v1, &r1 = v1;~
+- ~const int *p2 = &v2, *const p3 = &i, &r2 = v2;~
+
+#+BEGIN_QUOTE
+练习 2.31：假设已有上一个练习中所做的那些声明，则下面的哪些语句是合法的？请说明顶层 =const= 和底层 =const= 在每个例子中有何体现。
+#+END_QUOTE
+
+- ~r1 = v2;~
+- ~p1 = p2; p2 = p1;~
+- ~p1 = p3; p2 = p3;~
+
+#+BEGIN_QUOTE
+练习 2.32：下面的代码是否合法？如果非法，请设法将其修改正确。
+#+END_QUOTE
+
+~int null = 0, *p = null;~ 非法， ~constexpr int *p = nullptr;~
+
+*TODO* 33-38 跳过
+
+#+BEGIN_QUOTE
+练习 2.39：编译下面的程序观察其运行结果，注意，如果忘记写类定义体后面的分号会发生什么情况？记录下相关信息，以后可能会有用。
 #+END_QUOTE
 
 #+BEGIN_SRC c++
-  #include <iostream>
-  #include "Sales_item.h"
+  struct Foo {
+    
+  } /* 注意，没有分号 */
 
   int main() {
-      Sales_item item1, item2;
 
-      std::cin >> item1 >> item2;
-      std::cout << item1 + item2 << std::endl;
-
-      return 0;
   }
 #+END_SRC
 
 #+BEGIN_QUOTE
-练习 1.22：编写程序，读取多个具有相同 =ISBN= 的销售记录，输出所有记录的和。
+练习 2.40：根据自己的理解写出 =Sales_data= 类，最好与书中的例子有所区别。
 #+END_QUOTE
 
-#+BEGIN_SRC c++
-  #include <iostream>
-  #include "Sales_item.h"
-
-  int main() {
-      Sales_item sum, item;
-
-      std::cin >> sum;
-      while (std::cin >> item) {
-          sum += item;
-      }
-
-      std::cout << sum << std::endl;
-
-      return 0;
-  }
-#+END_SRC
-
-#+BEGIN_QUOTE
-练习 1.23：编写程序，读取多条销售记录，并统计每个 =ISBN= （每本书）有几条销售记录。
-#+END_QUOTE
-
-#+BEGIN_SRC c++
-  #include <iostream>
-  #include "Sales_item.h"
-
-  int main() {
-      Sales_item current_item;
-
-      if (std::cin >> current_item) {
-          Sales_item item;
-          int cnt = 1;
-          while (std::cin >> item) {
-              if (current_item.isbn() == item.isbn()) {
-                  ++cnt;
-              } else {
-                  std::cout << "ISBN = " << current_item.isbn()
-                            << " sales " << cnt << std::endl;
-                  current_item = item;
-                  cnt = 1;
-              }
-          }
-          std::cout << "ISBN = " << current_item.isbn() << " sales " << cnt << std::endl;
-      } else {
-          std::cerr << "No data?!" << std::endl;
-          return -1;
-      }
-
-      return 0;
-  }
-#+END_SRC
-
-#+BEGIN_QUOTE
-练习 1.24：输入表示多个 =ISBN= 的多条销售记录来测试上一个程序，每个 =ISBN= 的记录应该聚在一起。
-#+END_QUOTE
-
-编译 ~g++ -Wall -std=c++11 main.cc -o main~ ，执行 =./main < book_sales= 
-
-#+BEGIN_QUOTE
-练习 1.25：借助 [[./Sales_item.h][Sales_item.h]] 头文件，编译并运行本节给出的书店程序。
-#+END_QUOTE
